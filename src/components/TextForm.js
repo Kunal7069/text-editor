@@ -1,5 +1,6 @@
-import React, {useState} from 'react'
 
+import React, {useState} from 'react'
+import Axios from "axios";
 export default function TextForm(props) {
     const[myStyle,setMyStyle] = useState({
         color : 'black',
@@ -38,6 +39,42 @@ export default function TextForm(props) {
         let newText = '';
         setText(newText)
     }
+    
+    const findmean = () => {
+    
+      Axios.get(
+          `https://api.dictionaryapi.dev/api/v2/entries/en_US/${text}`
+        ).then((response) => {
+          // setText("finded")
+          console.log(response.data[0])
+          var thisdict=response.data[0]
+          var meaning=thisdict["meanings"]
+          var define=meaning[0]
+          var definations=define["definitions"]
+          var synonyms=define["synonyms"]
+          var syn=synonyms[0]
+          var defination= definations[0]
+          var deff=defination["definition"]
+        
+          setText(deff)
+        });
+      
+          }
+          const findsyn = () => {
+    
+            Axios.get(
+                `https://api.dictionaryapi.dev/api/v2/entries/en_US/${text}`
+              ).then((response) => {
+                console.log(response.data[0])
+                var thisdict=response.data[0]
+                var meaning=thisdict["meanings"]
+                var define=meaning[0]
+                var synonyms=define["synonyms"]
+                var syn=synonyms[0]
+                 setText(syn)
+              });
+            
+                }
     const removeGaps = ()=>{
         // console.log("UPPERCASE WAS CLICKED")
         let newText = text+text;
@@ -57,6 +94,8 @@ export default function TextForm(props) {
             <button className="btn btn-primary mx-2" onClick={handleLowClick}>Convert To Lowercase</button>
             <button className="btn btn-primary " onClick={handleClearClick}>Clear Text</button>
             <button className="btn btn-primary mx-2 " onClick={removeGaps}>Copy the text</button>
+            <button className="btn btn-primary mx-2 " onClick={findmean}>Find Meaning</button>
+            <button className="btn btn-primary mx-2 " onClick={findsyn}>Find Synonym</button>
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous"></link>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
             <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
